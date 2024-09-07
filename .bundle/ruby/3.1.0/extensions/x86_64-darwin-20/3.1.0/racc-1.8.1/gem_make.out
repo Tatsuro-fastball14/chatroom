@@ -1,0 +1,13 @@
+current directory: /Users/tatsuro/Desktop/workspace/.bundle/ruby/3.1.0/gems/racc-1.8.1/ext/racc/cparse
+/Users/tatsuro/.rbenv/versions/3.1.4/bin/ruby -I /Users/tatsuro/.rbenv/versions/3.1.4/lib/ruby/3.1.0 extconf.rb
+creating Makefile
+
+current directory: /Users/tatsuro/Desktop/workspace/.bundle/ruby/3.1.0/gems/racc-1.8.1/ext/racc/cparse
+make DESTDIR\= sitearchdir\=./.gem.20240905-3324-x8i4ez sitelibdir\=./.gem.20240905-3324-x8i4ez clean
+xcode-select: note: no developer tools were found at '/Applications/Xcode.app', requesting install. Choose an option in the dialog to download the command line developer tools.
+
+current directory: /Users/tatsuro/Desktop/workspace/.bundle/ruby/3.1.0/gems/racc-1.8.1/ext/racc/cparse
+make DESTDIR\= sitearchdir\=./.gem.20240905-3324-x8i4ez sitelibdir\=./.gem.20240905-3324-x8i4ez
+xcode-select: note: no developer tools were found at '/Applications/Xcode.app', requesting install. Choose an option in the dialog to download the command line developer tools.
+
+make failed, exit code 1
