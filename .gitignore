@@ -13,8 +13,8 @@ dist/
 dist-ssr
 coverage
 *.local
-.bundle/
-
+.bundle/ruby/
+!.bundle/config
 
 
 
