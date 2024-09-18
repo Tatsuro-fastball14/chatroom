@@ -46,23 +46,22 @@ export default {
     this.fetchMessages()
     this.createSubscription() // createdフック内でcreateSubscriptionメソッドを呼び出す
   },
+  // 略
   methods: {
-    // サブスクリプションを作成するメソッド
     createSubscription() {
       this.subscription = this.cable.subscriptions.create(
         { channel: 'RoomChannel', room_id: this.roomId },
         {
           received: (message) => {
             console.log(message)
-            this.messages.push(message) // 新しいメッセージをメッセージリストに追加
+            this.messages.push(message)
           }
         }
       )
     },
-    // メッセージを取得するメソッド
     fetchMessages() {
       axios
-        .get(`http://localhost:3000/rooms/${this.roomId}/messages`)
+        .get(`${import.meta.env.VITE_API_URL}/rooms/${this.roomId}/messages`)
         .then((response) => {
           this.messages = response.data
         })
@@ -70,16 +69,14 @@ export default {
           console.error(error)
         })
     },
-    // メッセージを送信するメソッド
     sendMessage() {
       axios
-        .post(`http://localhost:3000/rooms/${this.roomId}/messages`, {
+        .post(`${import.meta.env.VITE_API_URL}/rooms/${this.roomId}/messages`, {
           content: this.newMessageContent,
           sender_name: this.senderName
         })
         .then(() => {
-          this.newMessageContent = '' // メッセージ送信後に入力フィールドをクリア
-          this.fetchMessages() // 送信後にメッセージを再取得
+          this.newMessageContent = ''
         })
         .catch((error) => {
           console.error(error)
@@ -88,3 +85,4 @@ export default {
   }
 }
 </script>
+  
