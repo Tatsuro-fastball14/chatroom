@@ -25,6 +25,7 @@
 
 <script>
 import axios from 'axios'
+import { inject } from 'vue' // 追加
 
 export default {
   props: ['roomId'],
@@ -32,14 +33,33 @@ export default {
     return {
       roomName: '',
       messages: [],
-      senderName: '', // 追加
-      newMessageContent: '' // 追加
+      senderName: '',
+      newMessageContent: ''
     }
+  },
+  // setupフックを追加
+  setup() {
+    const cable = inject('cable')
+    return { cable }
   },
   created() {
     this.fetchMessages()
+    this.createSubscription() // createdフック内でcreateSubscriptionメソッドを呼び出す
   },
   methods: {
+    // サブスクリプションを作成するメソッド
+    createSubscription() {
+      this.subscription = this.cable.subscriptions.create(
+        { channel: 'RoomChannel', room_id: this.roomId },
+        {
+          received: (message) => {
+            console.log(message)
+            this.messages.push(message) // 新しいメッセージをメッセージリストに追加
+          }
+        }
+      )
+    },
+    // メッセージを取得するメソッド
     fetchMessages() {
       axios
         .get(`http://localhost:3000/rooms/${this.roomId}/messages`)
@@ -50,6 +70,7 @@ export default {
           console.error(error)
         })
     },
+    // メッセージを送信するメソッド
     sendMessage() {
       axios
         .post(`http://localhost:3000/rooms/${this.roomId}/messages`, {
@@ -57,8 +78,8 @@ export default {
           sender_name: this.senderName
         })
         .then(() => {
-          this.newMessageContent = ''
-          this.fetchMessages() // メッセージを送信後にメッセージを再取得
+          this.newMessageContent = '' // メッセージ送信後に入力フィールドをクリア
+          this.fetchMessages() // 送信後にメッセージを再取得
         })
         .catch((error) => {
           console.error(error)
