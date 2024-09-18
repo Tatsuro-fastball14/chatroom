@@ -7,6 +7,19 @@
         <strong>{{ message.sender_name }}:</strong> {{ message.content }}
       </li>
     </ul>
+    <form @submit.prevent="sendMessage">
+      <div>
+        <h3>名前</h3>
+        <input type="text" v-model="senderName" placeholder="名前を入力" required />
+      </div>
+      <div>
+        <h3>メッセージ</h3>
+        <input type="text" v-model="newMessageContent" placeholder="メッセージを入力" required />
+      </div>
+      <div>
+        <button type="submit">送信</button>
+      </div>
+    </form>
   </div>
 </template>
 
@@ -18,7 +31,9 @@ export default {
   data() {
     return {
       roomName: '',
-      messages: []
+      messages: [],
+      senderName: '', // 追加
+      newMessageContent: '' // 追加
     }
   },
   created() {
@@ -30,6 +45,20 @@ export default {
         .get(`http://localhost:3000/rooms/${this.roomId}/messages`)
         .then((response) => {
           this.messages = response.data
+        })
+        .catch((error) => {
+          console.error(error)
+        })
+    },
+    sendMessage() {
+      axios
+        .post(`http://localhost:3000/rooms/${this.roomId}/messages`, {
+          content: this.newMessageContent,
+          sender_name: this.senderName
+        })
+        .then(() => {
+          this.newMessageContent = ''
+          this.fetchMessages() // メッセージを送信後にメッセージを再取得
         })
         .catch((error) => {
           console.error(error)
